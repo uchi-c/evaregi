@@ -144,6 +144,28 @@ body {
   box-shadow: 0 6px 24px -14px rgba(11, 31, 58, 0.25);
 }
 
+/* ---------- Brand logo ---------- */
+.site-logo {
+  height: 2.4rem;
+  width: auto;
+  display: block;
+}
+@media (min-width: 1024px) {
+  .site-logo {
+    height: 2.6rem;
+  }
+}
+/* Transparent home nav: white logo over the hero, colour logo once scrolled */
+.site-logo-dark {
+  display: none;
+}
+.nav-scrolled .site-logo-light {
+  display: none;
+}
+.nav-scrolled .site-logo-dark {
+  display: block;
+}
+
 /* ---------- Hero ---------- */
 .hero-overlay {
   background: linear-gradient(

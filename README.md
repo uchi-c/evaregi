@@ -46,10 +46,26 @@ No backend and no build tooling are required — it's a fully static site.
 
 ## Premium features included
 
-Sticky navigation · animated statistics · smooth scrolling · lightbox gallery ·
-before/after slider · FAQ accordion · floating WhatsApp button · quote request
-form · scroll animations · mobile responsive · SEO meta + `sitemap.xml` /
-`robots.txt` · professional footer · back-to-top button.
+Hero "build sequence" animation · sticky navigation · animated statistics ·
+smooth scrolling · lightbox gallery · before/after slider · FAQ accordion ·
+floating WhatsApp button · quote request form · scroll animations · mobile
+responsive · SEO meta + `sitemap.xml` / `robots.txt` · professional footer ·
+back-to-top button.
+
+### Hero build sequence (`index.html`)
+
+A video-like, **dependency-free** loop in the home hero assembles the building
+in four stages (site prep → crew → single unit → finished building) with a
+crossfade + subtle Ken Burns zoom and a 4-dash progress indicator. It's built
+with CSS transitions + a small state machine in the "Hero build sequence"
+region of `js/main.js` — no video file and no animation library. It freezes on
+the current
+frame when scrolled out of view, respects `prefers-reduced-motion` (holds the
+finished frame, static), preloads only the first frame and lazy-loads the rest.
+
+The home-page highlight cards use a matching **container slide-in** reveal
+(`.container-reveal`, a clip-path wipe) via native scroll-driven animations,
+with an `IntersectionObserver` fallback.
 
 ## Running locally
 
@@ -77,6 +93,12 @@ can be populated with Evaregi's real material:
 - **Images** — hero and section imagery uses Unsplash placeholders. Swap for
   Evaregi's own project photos (drop them in `assets/img/` and update the
   `src` / `data-lightbox` URLs).
+- **Hero build-sequence frames** — the four `#heroSequence .hero-stage` images
+  in `index.html` are Unsplash placeholders. Replace them (and the matching
+  `<link rel="preload">` in the `<head>`) with the client photos in build
+  order: `site-photo-03-civil-works` → `site-photo-01-crew` →
+  `product-photo-02-single-unit` → `site-photo-04-two-storey-building`. The
+  mapping is documented in a comment above the hero section.
 - **Certificates** — `assets/certs/*.pdf` are generated placeholders. Replace
   with the official scanned documents.
 - **Client logos** — the marquee on the home page uses placeholder names.

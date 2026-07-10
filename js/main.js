@@ -87,6 +87,123 @@
     });
   }
 
+  /* ---------- Hero build sequence (crossfade + Ken Burns loop) ---------- */
+  var heroSeq = document.getElementById("heroSequence");
+  if (heroSeq) {
+    var stages = Array.prototype.slice.call(
+      heroSeq.querySelectorAll(".hero-stage")
+    );
+    var dashes = Array.prototype.slice.call(
+      document.querySelectorAll("#heroProgress .hero-dash")
+    );
+    var heroReduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    var STAGE_MS = 2400; // ~1.8s hold + ~0.6s crossfade
+    var activeStage = 0;
+    var heroTimer = null;
+
+    // First frame is preloaded in <head>; pull in stages 2–4 now.
+    stages.forEach(function (img) {
+      var src = img.getAttribute("data-src");
+      if (src && !img.getAttribute("src")) img.setAttribute("src", src);
+    });
+
+    var setStage = function (i) {
+      activeStage = i;
+      stages.forEach(function (img, idx) {
+        img.classList.toggle("is-active", idx === i);
+      });
+      dashes.forEach(function (dash, idx) {
+        dash.classList.toggle("is-active", idx === i);
+      });
+    };
+
+    var advanceStage = function () {
+      setStage((activeStage + 1) % stages.length);
+    };
+
+    var heroVisible = function () {
+      var r = heroSeq.getBoundingClientRect();
+      return r.bottom > 0 && r.top < window.innerHeight;
+    };
+
+    var startHero = function () {
+      if (heroTimer || heroReduce) return;
+      heroTimer = window.setInterval(advanceStage, STAGE_MS);
+    };
+    var stopHero = function () {
+      if (heroTimer) {
+        window.clearInterval(heroTimer);
+        heroTimer = null;
+      }
+    };
+
+    if (heroReduce) {
+      // Reduced motion: hold the finished building, no loop.
+      setStage(stages.length - 1);
+    } else {
+      setStage(0);
+      startHero();
+
+      // Freeze on the current frame once the hero scrolls out of view.
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) startHero();
+              else stopHero();
+            });
+          },
+          { threshold: 0.15 }
+        ).observe(heroSeq);
+      }
+
+      // Pause while the tab is hidden to save cycles.
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden) stopHero();
+        else if (heroVisible()) startHero();
+      });
+    }
+  }
+
+  /* ---------- Container slide-in reveal (clip-path wipe) ---------- */
+  var revealEls = Array.prototype.slice.call(
+    document.querySelectorAll(".container-reveal")
+  );
+  if (revealEls.length) {
+    var supportsViewTimeline =
+      window.CSS &&
+      CSS.supports &&
+      CSS.supports("animation-timeline: view()");
+    var revealReduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    // Native scroll-driven animation (CSS) handles supporting browsers.
+    if (!supportsViewTimeline) {
+      if (revealReduce || !("IntersectionObserver" in window)) {
+        revealEls.forEach(function (el) {
+          el.classList.add("reveal-in");
+        });
+      } else {
+        var revealObserver = new IntersectionObserver(
+          function (entries, obs) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("reveal-in");
+                obs.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.2, rootMargin: "0px 0px -10% 0px" }
+        );
+        revealEls.forEach(function (el) {
+          revealObserver.observe(el);
+        });
+      }
+    }
+  }
+
   /* ---------- FAQ accordion ---------- */
   document.querySelectorAll(".faq-q").forEach(function (q) {
     q.addEventListener("click", function () {

@@ -144,6 +144,28 @@ body {
   box-shadow: 0 6px 24px -14px rgba(11, 31, 58, 0.25);
 }
 
+/* ---------- Brand logo ---------- */
+.site-logo {
+  height: 2.4rem;
+  width: auto;
+  display: block;
+}
+@media (min-width: 1024px) {
+  .site-logo {
+    height: 2.6rem;
+  }
+}
+/* Transparent home nav: white logo over the hero, colour logo once scrolled */
+.site-logo-dark {
+  display: none;
+}
+.nav-scrolled .site-logo-light {
+  display: none;
+}
+.nav-scrolled .site-logo-dark {
+  display: block;
+}
+
 /* ---------- Hero ---------- */
 .hero-overlay {
   background: linear-gradient(
@@ -169,6 +191,87 @@ body {
     transparent 1px
   );
   background-size: 22px 22px;
+}
+
+/* ---------- Hero build sequence (crossfade + Ken Burns) ---------- */
+.hero-sequence {
+  overflow: hidden;
+  pointer-events: none; /* never block the nav / CTAs above it */
+}
+.hero-stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1);
+  will-change: opacity, transform;
+  transition: opacity 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+/* Active frame fades in and slowly pushes in (Ken Burns 1.0 -> 1.06) */
+.hero-stage.is-active {
+  opacity: 1;
+  transform: scale(1.06);
+  transition: opacity 0.6s cubic-bezier(0.65, 0, 0.35, 1),
+    transform 2.6s ease-out;
+}
+
+/* Stage progress indicator — 4 dashes */
+.hero-progress {
+  z-index: 20;
+}
+.hero-dash {
+  display: block;
+  width: 30px;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.28);
+  overflow: hidden;
+}
+.hero-dash i {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--primary-light);
+}
+/* Fill sweeps across the active dash over the stage hold */
+.hero-dash.is-active i {
+  width: 100%;
+  transition: width 2.2s linear;
+}
+
+/* ---------- Container slide-in reveal (clip-path wipe) ---------- */
+.container-reveal {
+  clip-path: inset(0 100% 0 0);
+  transform: translateY(12px);
+}
+/* JS-driven fallback for browsers without scroll-driven animations */
+.container-reveal.reveal-in {
+  clip-path: inset(0 0 0 0);
+  transform: translateY(0);
+  transition: clip-path 0.7s cubic-bezier(0.65, 0, 0.35, 1),
+    transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+/* Progressive enhancement: native scroll-driven animation when supported */
+@supports (animation-timeline: view()) {
+  .container-reveal {
+    animation: slide-in-container linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+  @keyframes slide-in-container {
+    from {
+      clip-path: inset(0 100% 0 0);
+      transform: translateY(12px);
+    }
+    to {
+      clip-path: inset(0 0 0 0);
+      transform: translateY(0);
+    }
+  }
 }
 
 /* ---------- Cards ---------- */
@@ -571,5 +674,22 @@ body {
   }
   * {
     transition-duration: 0.01ms !important;
+  }
+  /* Freeze the hero on a single finished frame; no crossfade loop */
+  .hero-stage {
+    opacity: 0;
+    transform: none !important;
+  }
+  .hero-stage:last-child {
+    opacity: 1;
+  }
+  .hero-progress {
+    display: none;
+  }
+  /* Cards appear in their final placed state — no clip-path wipe */
+  .container-reveal {
+    clip-path: none !important;
+    transform: none !important;
+    animation: none !important;
   }
 }

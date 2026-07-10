@@ -8,12 +8,14 @@
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Evaregi | Prefabricated & Modular Building Solutions" />
 <meta property="og:description" content="Fast, durable and cost-effective modular buildings for mining, construction, government and commercial sectors." />
-<meta property="og:image" content="assets/logo.svg" />
+<meta property="og:image" content="https://www.evaregi.com/assets/logo.svg" />
 <meta name="theme-color" content="#0B1F3A" />
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<!-- Preload only the first hero build-sequence frame; stages 2–4 lazy-load -->
+<link rel="preload" as="image" href="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1920&q=80" fetchpriority="high" />
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
@@ -39,9 +41,9 @@
 <header id="navbar" data-transparent="true" class="nav-shell fixed top-0 inset-x-0 z-50">
   <nav class="max-w-7xl mx-auto px-5 lg:px-8">
     <div class="flex items-center justify-between h-20">
-      <a href="index.html" class="flex items-center gap-2.5">
-        <span class="grid place-items-center w-10 h-10 rounded-xl bg-primary text-white font-bold text-lg shadow-lg">E</span>
-        <span class="nav-brand-text text-white font-bold text-xl tracking-tight leading-none">EVAREGI<span class="block text-[10px] font-medium tracking-[0.15em] text-primary-light">MODULAR SOLUTIONS</span></span>
+      <a href="index.html" class="flex items-center gap-2.5" aria-label="Evaregi home">
+        <img src="assets/logo-white.svg" alt="Evaregi — Modular Building Solutions" class="site-logo site-logo-light" width="200" height="48" />
+        <img src="assets/logo.svg" alt="Evaregi — Modular Building Solutions" class="site-logo site-logo-dark" width="200" height="48" />
       </a>
 
       <div class="hidden lg:flex items-center gap-8 text-white/90">
@@ -79,8 +81,25 @@
 </header>
 
 <!-- ===================== HERO ===================== -->
+<!--
+  Hero "build sequence": a video-like, dependency-free crossfade + Ken Burns
+  loop that assembles the building in four stages using real project photos.
+  The four <img> layers below use the site's Unsplash placeholders. Replace the
+  src of each with the client-supplied originals in this build order:
+    Stage 1  assets/site-photo-03-civil-works.png        (site prep)
+    Stage 2  assets/site-photo-01-crew.png               (crew / install)
+    Stage 3  assets/product-photo-02-single-unit.png     (single unit placed)
+    Stage 4  assets/site-photo-04-two-storey-building.png (finished building)
+  Drive/behaviour lives in the "Hero build sequence" region of js/main.js and
+  the .hero-sequence styles in css/styles.css.
+-->
 <section class="relative min-h-screen flex items-center">
-  <div class="absolute inset-0 bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1920&q=80'); background-color:#0B1F3A;"></div>
+  <div id="heroSequence" class="hero-sequence absolute inset-0" style="background-color:#0B1F3A;" aria-hidden="true">
+    <img class="hero-stage is-active" src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1920&q=80" alt="" fetchpriority="high" decoding="async" />
+    <img class="hero-stage" data-src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1920&q=80" alt="" loading="lazy" decoding="async" />
+    <img class="hero-stage" data-src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1920&q=80" alt="" loading="lazy" decoding="async" />
+    <img class="hero-stage" data-src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1920&q=80" alt="" loading="lazy" decoding="async" />
+  </div>
   <div class="absolute inset-0 hero-overlay"></div>
   <div class="absolute inset-0 hero-pattern"></div>
 
@@ -119,6 +138,14 @@
     </div>
   </div>
 
+  <!-- Build-sequence progress: 4 dashes tracking the active stage -->
+  <div id="heroProgress" class="hero-progress absolute bottom-7 left-5 lg:left-8 flex items-center gap-2.5" role="img" aria-label="Building assembly animation in progress">
+    <span class="hero-dash is-active"><i></i></span>
+    <span class="hero-dash"><i></i></span>
+    <span class="hero-dash"><i></i></span>
+    <span class="hero-dash"><i></i></span>
+  </div>
+
   <a href="#highlights" class="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/70 hover:text-white transition hidden sm:block" aria-label="Scroll down">
     <i class="fa-solid fa-chevron-down text-xl animate-bounce"></i>
   </a>
@@ -128,17 +155,17 @@
 <section id="highlights" class="section bg-white">
   <div class="max-w-7xl mx-auto px-5 lg:px-8">
     <div class="grid lg:grid-cols-3 gap-6">
-      <div class="card p-8" data-aos="fade-up">
+      <div class="card container-reveal p-8">
         <div class="service-icon mb-5"><i class="fa-solid fa-gauge-high"></i></div>
         <h3 class="font-semibold text-xl text-navy mb-2">Built in Weeks, Not Months</h3>
         <p class="text-gray-600 leading-relaxed">Factory-controlled fabrication runs in parallel with site works, cutting project timelines by up to 50% versus conventional builds.</p>
       </div>
-      <div class="card p-8" data-aos="fade-up" data-aos-delay="120">
+      <div class="card container-reveal p-8" style="--reveal-delay:120ms">
         <div class="service-icon mb-5"><i class="fa-solid fa-shield-halved"></i></div>
         <h3 class="font-semibold text-xl text-navy mb-2">Engineered to Last</h3>
         <p class="text-gray-600 leading-relaxed">Steel-framed structures built to withstand harsh mining and remote environments, with insulation for year-round comfort.</p>
       </div>
-      <div class="card p-8" data-aos="fade-up" data-aos-delay="240">
+      <div class="card container-reveal p-8" style="--reveal-delay:240ms">
         <div class="service-icon mb-5"><i class="fa-solid fa-truck-fast"></i></div>
         <h3 class="font-semibold text-xl text-navy mb-2">Relocatable &amp; Reusable</h3>
         <p class="text-gray-600 leading-relaxed">Units can be dismantled, relocated and redeployed as your operations move — protecting your capital investment.</p>
@@ -362,8 +389,7 @@
     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-white/10">
       <div>
         <div class="flex items-center gap-2.5 mb-4">
-          <span class="grid place-items-center w-10 h-10 rounded-xl bg-primary text-white font-bold text-lg">E</span>
-          <span class="font-bold text-xl">EVAREGI</span>
+          <img src="assets/logo-white.svg" alt="Evaregi — Modular Building Solutions" class="site-logo" width="200" height="48" />
         </div>
         <p class="text-white/70 text-sm leading-relaxed">Prefabricated &amp; modular building solutions engineered for speed, durability and value — delivered turnkey across every sector.</p>
         <div class="flex gap-3 mt-5">

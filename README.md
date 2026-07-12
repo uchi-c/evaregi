@@ -90,15 +90,16 @@ can be populated with Evaregi's real material:
 - **Contact details** — phone `+260 97 000 0000`, `info@evaregi.com`, and the
   Lusaka address appear in every page footer, the contact page, the WhatsApp
   links (`wa.me/260970000000`) and `tel:` links. Search-and-replace these.
-- **Images** — hero and section imagery uses Unsplash placeholders. Swap for
-  Evaregi's own project photos (drop them in `assets/img/` and update the
-  `src` / `data-lightbox` URLs).
-- **Hero build-sequence frames** — the four `#heroSequence .hero-stage` images
-  in `index.html` are Unsplash placeholders. Replace them (and the matching
-  `<link rel="preload">` in the `<head>`) with the client photos in build
-  order: `site-photo-03-civil-works` → `site-photo-01-crew` →
-  `product-photo-02-single-unit` → `site-photo-04-two-storey-building`. The
-  mapping is documented in a comment above the hero section.
+- **Images** — all hero and section imagery now uses Evaregi's own project
+  photos in `assets/img/` (the Unsplash placeholders have been removed). The
+  hero build sequence runs `hero-1-site-prep` → `hero-2-install` →
+  `hero-3-units-placed` → `hero-4-finished`; the mapping is documented in a
+  comment above the hero section. A few extra supplied photos
+  (`crew-canopy`, `crew-team-alt`, `detail-ac`, `detail-geyser`,
+  `detail-plumbing`, `detail-plumbing-side`) are kept in `assets/img/` as an
+  available library but aren't wired into a page yet. Source photos are
+  1080×486; swap in higher-resolution originals with `srcset` before launch if
+  you need crispness above ~1080px wide.
 - **Certificates** — `assets/certs/*.pdf` are generated placeholders. Replace
   with the official scanned documents.
 - **Client logos** — the marquee on the home page uses placeholder names.

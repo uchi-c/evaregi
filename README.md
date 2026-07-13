@@ -94,10 +94,11 @@ can be populated with Evaregi's real material:
   photos in `assets/img/` (the Unsplash placeholders have been removed). The
   hero build sequence runs `hero-1-site-prep` → `hero-2-install` →
   `hero-3-units-placed` → `hero-4-finished`; the mapping is documented in a
-  comment above the hero section. A few extra supplied photos
-  (`crew-canopy`, `crew-team-alt`, `detail-ac`, `detail-geyser`,
-  `detail-plumbing`, `detail-plumbing-side`) are kept in `assets/img/` as an
-  available library but aren't wired into a page yet. Source photos are
+  comment above the hero section. The MEP/finishing detail shots
+  (`detail-geyser`, `detail-ac`, `detail-plumbing`) and `crew-canopy` are used
+  in the "In the details" section on the Services page. Two extra supplied
+  photos (`crew-team-alt`, `detail-plumbing-side`) are kept in `assets/img/` as
+  an available library but aren't wired into a page yet. Source photos are
   1080×486; swap in higher-resolution originals with `srcset` before launch if
   you need crispness above ~1080px wide.
 - **Certificates** — `assets/certs/*.pdf` are generated placeholders. Replace

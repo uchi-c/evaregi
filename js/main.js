@@ -204,6 +204,26 @@
     }
   }
 
+  /* ---------- Home explore tabs (Services / Products / Industry) ---------- */
+  document.querySelectorAll("[data-tabs]").forEach(function (root) {
+    var tabs = Array.prototype.slice.call(root.querySelectorAll('[role="tab"]'));
+    if (!tabs.length) return;
+    function activate(tab) {
+      tabs.forEach(function (t) {
+        var selected = t === tab;
+        t.setAttribute("aria-selected", selected ? "true" : "false");
+        var panel = root.querySelector("#" + t.getAttribute("aria-controls"));
+        if (panel) panel.hidden = !selected;
+      });
+    }
+    tabs.forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        activate(tab);
+      });
+    });
+    activate(tabs[0]);
+  });
+
   /* ---------- FAQ accordion ---------- */
   document.querySelectorAll(".faq-q").forEach(function (q) {
     q.addEventListener("click", function () {

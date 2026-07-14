@@ -87,20 +87,26 @@ Cloudflare Pages). No configuration or build command is needed — set the outpu
 This site is fully functional but uses clearly-marked placeholder content so it
 can be populated with Evaregi's real material:
 
-- **Contact details** — phone `+260 97 000 0000`, `info@evaregi.com`, and the
-  Lusaka address appear in every page footer, the contact page, the WhatsApp
-  links (`wa.me/260970000000`) and `tel:` links. Search-and-replace these.
+- **Contact details** — real: phone `+260 977 211 393`, email
+  `Evaregibuilding@gmail.com`, and the Plot 12261 Muche Close, Woodlands Ext.,
+  Lusaka address, sourced from the company profile PDF. Appear in every page
+  footer, the contact page, WhatsApp links and `tel:`/`mailto:` links.
 - **Images** — all hero and section imagery now uses Evaregi's own project
   photos in `assets/img/` (the Unsplash placeholders have been removed). The
   hero build sequence runs `hero-1-site-prep` → `hero-2-install` →
   `hero-3-units-placed` → `hero-4-finished`; the mapping is documented in a
   comment above the hero section. The MEP/finishing detail shots
   (`detail-geyser`, `detail-ac`, `detail-plumbing`) and `crew-canopy` are used
-  in the "In the details" section on the Services page. Two extra supplied
-  photos (`crew-team-alt`, `detail-plumbing-side`) are kept in `assets/img/` as
-  an available library but aren't wired into a page yet. Source photos are
-  1080×486; swap in higher-resolution originals with `srcset` before launch if
-  you need crispness above ~1080px wide.
+  in the "In the details" section on the Services page. The `container-*`
+  photos document a shipping-container conversion (raw → fit-out → finished)
+  and are used in the "Converted Steel Shipping Containers" product on the
+  Products page. A few extra supplied photos (`crew-team-alt`,
+  `detail-plumbing-side`, `container-before`, `container-interior-2`) are kept
+  in `assets/img/` as an available library but aren't wired into a page yet.
+  Source photos are 1080×486; swap in higher-resolution originals with
+  `srcset` before launch if you need crispness above ~1080px wide.
+- **Logo** — real chevron mark extracted from the company profile PDF, used
+  in `assets/logo.svg`, `assets/logo-white.svg` and `assets/favicon.svg`.
 - **Certificates** — `assets/certs/*.pdf` are generated placeholders. Replace
   with the official scanned documents.
 - **Client logos** — the marquee on the home page uses placeholder names.
